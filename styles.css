@@ -119,7 +119,7 @@ body {
 .hero {
     height: 100vh;
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                url('https://source.unsplash.com/random/1920x1080?dark') no-repeat center center/cover;
+                url('assets/JejuOcean.JPEG') no-repeat center center/cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -349,7 +349,7 @@ body {
 
 .button {
     display: inline-block;
-    padding: 0.8rem 1.5rem;
+    padding: 0.5rem 1.5rem;
     background-color: var(--accent);
     color: white;
     text-decoration: none;
@@ -364,35 +364,35 @@ body {
 
 /* Contact Page Styles */
 .contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    margin-top: 2rem;
+    max-width: 800px;
+    margin: 2rem auto;
 }
 
-.contact-info h2,
-.contact-form h2 {
+.contact-info h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
     color: var(--text-primary);
+    text-align: center;
 }
 
 .contact-info p {
     color: var(--text-secondary);
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 .social-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    margin: 0 auto;
 }
 
 .social-item {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem;
+    padding: 1.5rem;
     background-color: var(--secondary-bg);
     border-radius: 8px;
     text-decoration: none;
@@ -403,10 +403,16 @@ body {
 .social-item:hover {
     transform: translateY(-3px);
     color: var(--accent);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .social-item i {
     font-size: 1.5rem;
+}
+
+.social-item span {
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
 .form-group {
