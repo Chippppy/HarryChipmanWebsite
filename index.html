@@ -16,11 +16,11 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-content">
-            <a href="index.html" class="logo">HC</a>
+            <a href="#home" class="logo">HC</a>
             <div class="nav-links">
-                <a href="about.html">About</a>
-                <a href="projects.html">Projects</a>
-                <a href="contact.html">Contact</a>
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
                 <button class="theme-toggle" aria-label="Toggle theme">
                     <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="4" />
@@ -45,17 +45,193 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="home" class="hero">
         <h1>Harry Chipman</h1>
     </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h1>About</h1>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="./assets/AboutPhoto.JPEG" alt="Harry Chipman" class="profile-image">
+                </div>
+                <div class="about-text">
+                    <p>Hi 👋 I'm Harry.</p>
+                    <p>Welcome to my website.</p>
+                    <p>This is where I'm sharing some projects that I've worked on to showcase the skills I've learned and to show off some of my interests.</p>
+                    <p>Aside from coding and basically all things tech, I'm a big fan of travel and have been lucky enough to visit some amazing places around the world, some of which are showcased in my projects themselves (the image of me here is from the beautiful Fox Glacier, New Zealand).</p>
+                    <p>I also enjoy gaming (TFT IYKYK), reading (mostly fiction), and football (⚽), as it's always been a big part of my life.</p>
+                    <p>This site is mainly for myself, but if you do happen to stumble across it, I hope you enjoy and find something cool. 😊</p>
+                    <p>I'm always interested in new project ideas, so if you think of any that I might find fun to develop, feel free to let me know about them using my contact links at the bottom of the page. 😊</p> 
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <h1>Projects</h1>
+            
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-images">
+                    <img src="./assets/WebsiteScreenshot.jpg" alt="Website Project Screenshot" class="project-image">
+                </div>
+                <div class="project-info">
+                    <h2>Portfolio Website</h2>
+                    <p>A responsive, single-page portfolio built with HTML, CSS, and JavaScript, showcasing my projects, experience, and contact information. Hosted via GitHub Pages.</p>
+                    <div class="project-links">
+                        <a href="#home" class="button">View Live</a>
+                        <a href="https://github.com/Chippppy/HarryChipmanWebsite" class="button">Source Code - GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card reverse">
+                <div class="project-images">
+                    <img src="./assets/AuthSecurity1.jpg" alt="AuthSecurity Project Screenshot 1" class="project-image">
+                    <img src="./assets/AuthSecurity2.jpg" alt="AuthSecurity Project Screenshot 2" class="project-image">
+                </div>
+                <div class="project-info">
+                    <h2>AuthSecurity - Secure User Authentication Project</h2>
+                    <p>A Django REST Framework backend with a vanilla JavaScript frontend implementing secure user authentication, including email validation regex checking, session management, and Two-Factor Authentication (2FA) using TOTP.</p>
+                    <div class="project-links">
+                        <!-- <a href="https://chippppy.github.io/.../" class="button">View Live</a> -->
+                        <a href="https://github.com/Chippppy/AuthSecurity" class="button">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-images">
+                    <img src="./assets/FileAnalyser1.jpg" alt="FileAnalyser Project Screenshot 1" class="project-image">
+                    <img src="./assets/FileAnalyser2.jpg" alt="FileAnalyser Project Screenshot 2" class="project-image">
+                </div>
+                <div class="project-info">
+                    <h2>FileAnalyser - Malware Detection Project</h2>
+                    <p>A Python-based tool designed to scan files for potential malware, utilizing signature-based detection methods to identify known threats.</p>
+                    <div class="project-links">
+                        <!-- <a href="https://chippppy.github.io/.../" class="button">View Live</a> -->
+                        <a href="https://github.com/Chippppy/File-Analyser-Tool" class="button">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card reverse">
+                <div class="project-images">
+                    <img src="./assets/NetworkIDS.jpg" alt="NetworkIDS Project Screenshot 1" class="project-image">
+                </div>
+                <div class="project-info">
+                    <h2>NetworkIDS - Simple Network Intrusion Detection System</h2>
+                    <p>A simple IDS developed in Python that monitors network traffic to detect suspicious activities, aiding in the identification of potential security breaches.</p>
+                    <div class="project-links">
+                        <!-- <a href="https://chippppy.github.io/.../" class="button">View Live</a> -->
+                        <a href="https://github.com/Chippppy/Network-IDS" class="button">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card">
+                <div class="project-images">
+                    <img src="./assets/TeraRaidCalc1.jpg" alt="TeraRaidCalc Project Screenshot 1" class="project-image">
+                    <img src="./assets/TeraRaidCalc2.jpg" alt="TeraRaidCalc Project Screenshot 2" class="project-image">
+                </div>
+                <div class="project-info">
+                    <h2>TeraRaidCalc - Pokémon Tera Raid Battle Calculator</h2>
+                    <p>A web application built with TypeScript that assists players in strategizing for Tera Raid Battles in Pokémon Scarlet and Violet by providing type matchups and suggestions.</p>
+                    <div class="project-links">
+                        <!-- <a href="https://chippppy.github.io/.../" class="button">View Live</a> -->
+                        <a href="https://github.com/Chippppy/Tera-Raid-Battle-Calculator" class="button">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="project-card reverse">
+                <div class="project-images">
+                    <img src="./assets/japan-tripScreenshot.jpg" alt="Japan Trip Website Project Screenshot" class="project-image">
+                </div>
+                <div class="project-info">
+                    <h2>Japan Trip Travel Website</h2>
+                    <p>A static website documenting my travels across Japan, featuring city-specific pages, photo galleries, and personal anecdotes, built with HTML, CSS, and JavaScript.</p>
+                    <div class="project-links">
+                        <a href="https://chippppy.github.io/japan-trip/" class="button">View Live</a>
+                        <a href="https://github.com/Chippppy/japan-trip" class="button">Source Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 7 -->
+            <div class="project-card">
+                <div class="project-images">
+                    <img src="./assets/PongScreenshot.jpg" alt="Pong Game Project Screenshot" class="project-image">
+                </div>
+                <div class="project-info">
+                    <h2>Pure Javascript Pong! Game</h2>
+                    <p>My first programming project: a basic recreation of the classic Pong game using JavaScript, demonstrating fundamental game development concepts.</p>
+                    <div class="project-links">
+                        <a href="https://chippppy.github.io/PongGame/index.html" class="button">View Live</a>
+                        <a href="https://github.com/Chippppy/PongGame" class="button">Source Code</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h1>Contact</h1>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>How to Reach Me</h2>
+                    <p>Feel free to reach out through any of these platforms (LinkedIn or Email are best):</p>
+                    
+                    <div class="social-grid">
+                        <a href="https://www.linkedin.com/in/harry-chip/" class="social-item" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="https://github.com/Chippppy" class="social-item" target="_blank">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.instagram.com/harrychip.man/" class="social-item" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                            <span>Instagram</span>
+                        </a>
+                        <a href="mailto:hazachipman@gmail.com?subject=Networking%20Opportunity" class="social-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email Me</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top -->
+    <div class="back-to-top-container">
+        <a href="#home" class="back-to-top">
+            <i class="fas fa-arrow-up"></i>
+            <span>Back to Top</span>
+        </a>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-links">
-                <a href="about.html">About</a>
-                <a href="projects.html">Projects</a>
-                <a href="contact.html">Contact</a>
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
             </div>
             <div class="social-links">
                 <a href="https://www.linkedin.com/in/harry-chip/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
