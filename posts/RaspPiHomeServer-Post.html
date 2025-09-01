@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Tera Raid Calculator — Write-up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html#home" class="logo">HC</a>
+            <div class="nav-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../blog.html">Blog</a>
+                <a href="../index.html#contact">Contact</a>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2" />
+                        <path d="M12 20v2" />
+                        <path d="M4.22 4.22l1.42 1.42" />
+                        <path d="M18.36 18.36l1.42 1.42" />
+                        <path d="M2 12h2" />
+                        <path d="M20 12h2" />
+                        <path d="M4.22 19.78l1.42-1.42" />
+                        <path d="M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 0010.18 9.79z" />
+                    </svg>
+                </button>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <article class="post">
+            <header class="post-header container">
+                <p class="post-back"><a href="../blog.html"><i class="fas fa-arrow-left"></i> Back to Hub</a></p>
+                <h1 class="post-title">Raspberry Pi Home Server Setup</h1>
+                <div class="post-meta">Sept 2025 • HTML, HomeLab, Cybersecurity</div>
+                <div class="post-hero">
+                    <img src="../assets/PiServerNeofetch.png" alt="Raspberry Pi Home Server Neofetch">
+                </div>
+            </header>
+
+            <div class="post-body container">
+                <h2>Why build this?</h2>
+                <p>I wanted a quick way to compare Pokémon types and base stats to choose a raid counter. A small tool was the perfect playground for data modeling and UI iteration.</p>
+
+                <h2>Key decisions</h2>
+                <ul>
+                    <li>TypeScript for safety and better editor experience.</li>
+                    <li>Lean data structures for type matchups and base stats.</li>
+                    <li>Simple UI with fast filtering over heavy animations.</li>
+                </ul>
+
+                <h2>What I’d improve next</h2>
+                <p>Better state management for multi-criteria filtering, and some performance work around precomputing matchup tables.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../blog.html">Blog</a>
+                <a href="../index.html#contact">Contact</a>
+            </div>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/harry-chip/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Chippppy" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.instagram.com/harrychip.man/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
+
+
