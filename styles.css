@@ -798,7 +798,8 @@ html {
 }
 
 .posts-grid {
-    display: grid;
+    display: none;
+    /* display: grid; CHANGE WHEN PUBLISHING*/
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
 }
