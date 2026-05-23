@@ -1,0 +1,15 @@
+# Impeccable
+.impeccable/
+
+# Agents
+.agents/
+.cursor/
+.codex/
+.claude/
+
+# Docs
+DESIGN.md
+PRODUCT.md
+
+# AI blog generation pipeline (local only — never commit)
+blog-pipeline/

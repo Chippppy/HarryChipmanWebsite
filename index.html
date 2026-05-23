@@ -3,241 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Harry Chipman — security-minded developer portfolio. Projects in authentication, malware detection, network systems, and web development.">
     <title>Harry Chipman</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spectral:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png">
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar">
+<body class="home">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <nav class="navbar" aria-label="Primary">
         <div class="navbar-content">
-            <a href="#home" class="logo">HC</a>
-            <div class="nav-links">
+            <a href="#home" class="logo" aria-label="Harry Chipman, home">HC</a>
+            <div class="nav-links" id="nav-links">
                 <a href="#about">About</a>
                 <a href="#projects">Projects</a>
-                <a href="blog.html">Blog</a>
                 <a href="#contact">Contact</a>
-                <button class="theme-toggle" aria-label="Toggle theme">
-                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <a href="blog.html">Blog</a>
+                <button class="theme-toggle" type="button" aria-label="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="4" />
-                        <path d="M12 2v2" />
-                        <path d="M12 20v2" />
-                        <path d="M4.22 4.22l1.42 1.42" />
-                        <path d="M18.36 18.36l1.42 1.42" />
-                        <path d="M2 12h2" />
-                        <path d="M20 12h2" />
-                        <path d="M4.22 19.78l1.42-1.42" />
-                        <path d="M18.36 5.64l1.42-1.42" />
+                        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
                     </svg>
-                    <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 0010.18 9.79z" />
                     </svg>
                 </button>
             </div>
-            <div class="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </div>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <h1>Harry Chipman</h1>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="container">
-            <h1>About</h1>
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="./assets/AboutPhoto.JPEG" alt="Harry Chipman" class="profile-image">
-                </div>
-                <div class="about-text">
-                    <p>Hi 👋 I'm Harry.</p>
-                    <p>Welcome to my website.</p>
-                    <p>This is where I'm sharing some projects that I've worked on to showcase the skills I've learned and to show off some of my interests.</p>
-                    <p>Aside from coding and basically all things tech, I'm a big fan of travel and have been lucky enough to visit some amazing places around the world, some of which are showcased in my projects themselves (the image of me here is from the beautiful Fox Glacier, New Zealand).</p>
-                    <p>I also enjoy gaming (TFT IYKYK), reading (mostly fiction), and football (⚽), as it's always been a big part of my life.</p>
-                    <p>This site is mainly for myself, but if you do happen to stumble across it, I hope you enjoy and find something cool. 😊</p>
-                    <p>I'm always interested in new project ideas, so if you think of any that I might find fun to develop, feel free to let me know about them using my contact links at the bottom of the page. 😊</p> 
-                </div>
+    <main id="main">
+        <section id="home" class="journal-hero" aria-label="Introduction">
+            <div class="journal-hero__media">
+                <img src="./assets/JejuOcean.JPEG" alt="Coastal cliffs and ocean at Jeju Island, South Korea" width="2400" height="1600" fetchpriority="high">
             </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section">
-        <div class="container">
-            <h1>Projects</h1>
-            
-            <!-- AuthSecurity -->
-            <div class="project-card reverse">
-                <div class="project-images">
-                    <img src="./assets/AuthSecurity1.jpg" alt="AuthSecurity Project Screenshot 1" class="project-image">
-                    <img src="./assets/AuthSecurity2.jpg" alt="AuthSecurity Project Screenshot 2" class="project-image">
+            <div class="journal-hero__overlay" aria-hidden="true"></div>
+            <div class="journal-hero__inner">
+                <p class="journal-hero__kicker">Security · Development · Systems</p>
+                <h1 class="journal-hero__title">
+                    <span class="journal-hero__line">Harry</span>
+                    <span class="journal-hero__line journal-hero__line--emphasis">Chipman</span>
+                </h1>
+                <p class="journal-hero__lede">I build practical software across authentication, detection tooling, and web systems. This site is my field journal of projects worth showing.</p>
+                <div class="journal-hero__actions">
+                    <a class="btn btn--primary" href="#projects">View projects</a>
+                    <a class="btn btn--ghost" href="#contact">Get in touch</a>
                 </div>
-                <div class="project-info">
-                    <h2>AuthSecurity - Secure User Authentication Project</h2>
-                    <p>A Django REST Framework backend with a vanilla JavaScript frontend implementing secure user authentication, including email validation regex checking, session management, and Two-Factor Authentication (2FA) using TOTP.</p>
-                    <div class="project-links">
-                        <!-- <a href="https://chippppy.github.io/.../" class="button">View Live</a> -->
-                        <a href="https://github.com/Chippppy/AuthSecurity" class="button">Source Code</a>
+                <p class="journal-hero__caption">Jeju Island · South Korea</p>
+            </div>
+            <a class="journal-hero__scroll" href="#about" aria-label="Scroll to about section">
+                <span>Explore</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </a>
+        </section>
+
+        <section id="about" class="journal-section journal-about">
+            <div class="journal-section__marker" aria-hidden="true">01</div>
+            <div class="journal-section__grid">
+                <header class="journal-section__header">
+                    <p class="journal-section__eyebrow">About</p>
+                    <h2 class="journal-section__title">Hi there :)</h2>
+                </header>
+                <div class="journal-about__layout">
+                    <figure class="journal-about__figure">
+                        <img src="./assets/AboutPhoto.JPEG" alt="Harry Chipman at Fox Glacier, New Zealand" width="1200" height="1600" loading="lazy">
+                        <figcaption>Glacier Pic</figcaption>
+                    </figure>
+                    <div class="journal-about__copy">
+                        <p>I am a developer focused on security-minded systems and clear, maintainable web work. This portfolio collects projects that reflect what I have been learning and what I enjoy building.</p>
+                        <p>The work spans Django authentication with 2FA, malware analysis tooling, network intrusion detection, Java distributed-systems coursework, and TypeScript web apps. Each project is here because it taught me something concrete.</p>
+                        <p>Outside of work, I enjoy travel, follow football (soccer), read (mostly) fiction, and occasionally disappear into video games and IT hobbies.</p>
+                        <p>If you are reviewing this for a role, hi, I hope you enjoy my work. The contact section below is the fastest path to reach me. </p>
+                        <p>If you're just stalking, hello to you too, I might be tracking you ;)</p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- FileAnalyser -->
-            <div class="project-card">
-                <div class="project-images">
-                    <img src="./assets/FileAnalyser1.jpg" alt="FileAnalyser Project Screenshot 1" class="project-image">
-                    <img src="./assets/FileAnalyser2.jpg" alt="FileAnalyser Project Screenshot 2" class="project-image">
-                </div>
-                <div class="project-info">
-                    <h2>FileAnalyser - Malware Detection Project</h2>
-                    <p>A Python-based tool designed to scan files for potential malware, utilizing signature-based detection methods to identify known threats. Includes PE file analysis, file hashing, and hash lookup using the VirusTotal API (API key not included 😉 but they generously offer a free tier upon signup).</p>
-                    <div class="project-links">
-                        <!-- <a href="https://chippppy.github.io/.../" class="button">View Live</a> -->
-                        <a href="https://github.com/Chippppy/File-Analyser-Tool" class="button">Source Code</a>
+        <section id="projects" class="journal-section journal-work">
+            <div class="journal-section__marker" aria-hidden="true">02</div>
+            <div class="journal-section__grid">
+                <header class="journal-section__header journal-section__header--wide">
+                    <p class="journal-section__eyebrow">Selected work</p>
+                    <h2 class="journal-section__title">Projects with substance behind the screenshots.</h2>
+                </header>
+
+                <article class="work-entry">
+                    <div class="work-entry__meta">
+                        <span class="work-entry__index">01</span>
+                        <span class="work-entry__tags">Django · JavaScript · Security</span>
                     </div>
+                    <div class="work-entry__layout">
+                        <div class="work-entry__media work-entry__media--duo">
+                            <img src="./assets/AuthSecurity1.jpg" alt="AuthSecurity login interface" loading="lazy">
+                            <img src="./assets/AuthSecurity2.jpg" alt="AuthSecurity two-factor authentication screen" loading="lazy">
+                        </div>
+                        <div class="work-entry__body">
+                            <h3 class="work-entry__title">AuthSecurity</h3>
+                            <p class="work-entry__subtitle">Secure User Authentication Project</p>
+                            <p>A Django REST Framework backend with a vanilla JavaScript frontend for session login, CSRF-protected API calls, email validation, and TOTP 2FA - built locally as an auth learning project.</p>
+                            <div class="work-entry__links">
+                                <a href="posts/AuthSecurity-Post.html" class="btn btn--primary">Read write-up</a>
+                                <a href="https://github.com/Chippppy/AuthSecurity" class="btn btn--ghost" rel="noopener noreferrer" target="_blank">Source code</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="work-entry work-entry--reverse">
+                    <div class="work-entry__meta">
+                        <span class="work-entry__index">02</span>
+                        <span class="work-entry__tags">Java · Distributed Systems</span>
+                    </div>
+                    <div class="work-entry__layout">
+                        <div class="work-entry__media">
+                            <div class="work-entry__placeholder" aria-hidden="true">Java · Job Scheduling</div>
+                        </div>
+                        <div class="work-entry__body">
+                            <h3 class="work-entry__title">Distributed Systems Client</h3>
+                            <p class="work-entry__subtitle">Java job scheduler for ds-sim</p>
+                            <p>A Java client for COMP6105/3100 that talks to the ds-sim C simulation server - authenticate, read job state, and return allocations with Largest-Round-Robin, First-Capable, or my Stage 2 Start-Servers algorithm.</p>
+                            <div class="work-entry__links">
+                                <a href="posts/DistributedSystemsJava-Post.html" class="btn btn--primary">Read write-up</a>
+                                <a href="https://github.com/Chippppy/Distributed-Systems-Java" class="btn btn--ghost" rel="noopener noreferrer" target="_blank">Source code</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="work-entry">
+                    <div class="work-entry__meta">
+                        <span class="work-entry__index">03</span>
+                        <span class="work-entry__tags">Python · VirusTotal API</span>
+                    </div>
+                    <div class="work-entry__layout">
+                        <div class="work-entry__media work-entry__media--duo">
+                            <img src="./assets/FileAnalyser1.jpg" alt="FileAnalyser scan results view" loading="lazy">
+                            <img src="./assets/FileAnalyser2.jpg" alt="FileAnalyser PE file analysis output" loading="lazy">
+                        </div>
+                        <div class="work-entry__body">
+                            <h3 class="work-entry__title">FileAnalyser</h3>
+                            <p class="work-entry__subtitle">Malware Detection Project</p>
+                            <p>A Python tool for malware triage - file hashing, VirusTotal lookups, PE parsing, and optional sandbox-style behavior monitoring, with GUI and CLI interfaces.</p>
+                            <div class="work-entry__links">
+                                <a href="posts/FileAnalyser-Post.html" class="btn btn--primary">Read write-up</a>
+                                <a href="https://github.com/Chippppy/File-Analyser-Tool" class="btn btn--ghost" rel="noopener noreferrer" target="_blank">Source code</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="work-entry work-entry--reverse">
+                    <div class="work-entry__meta">
+                        <span class="work-entry__index">04</span>
+                        <span class="work-entry__tags">Python · Network Security</span>
+                    </div>
+                    <div class="work-entry__layout">
+                        <div class="work-entry__media">
+                            <img src="./assets/NetworkIDS.jpg" alt="NetworkIDS monitoring dashboard" loading="lazy">
+                        </div>
+                        <div class="work-entry__body">
+                            <h3 class="work-entry__title">NetworkIDS</h3>
+                            <p class="work-entry__subtitle">Simple Network Intrusion Detection System</p>
+                            <p>A Python IDS for learning: Scapy packet capture, heuristic alerts (port scans, SSH brute force, ICMP floods), and a Streamlit dashboard. Runs locally - not production monitoring.</p>
+                            <div class="work-entry__links">
+                                <a href="posts/NetworkIDS-Post.html" class="btn btn--primary">Read write-up</a>
+                                <a href="https://github.com/Chippppy/Network-IDS" class="btn btn--ghost" rel="noopener noreferrer" target="_blank">Source code</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="work-entry">
+                    <div class="work-entry__meta">
+                        <span class="work-entry__index">05</span>
+                        <span class="work-entry__tags">TypeScript · Web App</span>
+                    </div>
+                    <div class="work-entry__layout">
+                        <div class="work-entry__media work-entry__media--duo">
+                            <img src="./assets/TeraRaidCalc1.jpg" alt="TeraRaidCalc type comparison view" loading="lazy">
+                            <img src="./assets/TeraRaidCalc2.jpg" alt="TeraRaidCalc stat analysis screen" loading="lazy">
+                        </div>
+                        <div class="work-entry__body">
+                            <h3 class="work-entry__title">TeraRaidCalc</h3>
+                            <p class="work-entry__subtitle">Pokémon Tera Raid Battle Calculator</p>
+                            <p>A React and TypeScript web app for Pokémon Scarlet and Violet Tera Raids that ranks counters from your box using type matchups (base and tera), bulk, offensive stats, STAB, speed, and immunities - not a single super-effective pick.</p>
+                            <div class="work-entry__links">
+                                <a href="posts/TeraRaidCalc-Post.html" class="btn btn--primary">Read write-up</a>
+                                <a href="https://github.com/Chippppy/Tera-Raid-Battle-Calculator" class="btn btn--ghost" rel="noopener noreferrer" target="_blank">Source code</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="work-entry work-entry--reverse">
+                    <div class="work-entry__meta">
+                        <span class="work-entry__index">06</span>
+                        <span class="work-entry__tags">HTML · CSS · JavaScript</span>
+                    </div>
+                    <div class="work-entry__layout">
+                        <div class="work-entry__media">
+                            <img src="./assets/WebsiteScreenshot.jpg" alt="Portfolio website screenshot" loading="lazy">
+                        </div>
+                        <div class="work-entry__body">
+                            <h3 class="work-entry__title">Portfolio Website</h3>
+                            <p class="work-entry__subtitle">This site</p>
+                            <p>A field-journal portfolio built with HTML, CSS, and JavaScript - project highlights on the homepage, long-form write-ups on the blog, hosted on GitHub Pages with a custom domain.</p>
+                            <div class="work-entry__links">
+                                <a href="posts/PortfolioWebsite-Post.html" class="btn btn--primary">Read write-up</a>
+                                <a href="#home" class="btn btn--ghost">View live</a>
+                                <a href="https://github.com/Chippppy/HarryChipmanWebsite" class="btn btn--ghost" rel="noopener noreferrer" target="_blank">Source code</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="work-entry">
+                    <div class="work-entry__meta">
+                        <span class="work-entry__index">07</span>
+                        <span class="work-entry__tags">JavaScript · Canvas</span>
+                    </div>
+                    <div class="work-entry__layout">
+                        <div class="work-entry__media">
+                            <img src="./assets/PongScreenshot.jpg" alt="Pure JavaScript Pong game screenshot" loading="lazy">
+                        </div>
+                        <div class="work-entry__body">
+                            <h3 class="work-entry__title">Pure JavaScript Pong</h3>
+                            <p class="work-entry__subtitle">First programming project</p>
+                            <p>My first programming project: canvas Pong in plain JavaScript - game loop, collision detection, and two-player keyboard input.</p>
+                            <div class="work-entry__links">
+                                <a href="posts/PongGame-Post.html" class="btn btn--primary">Read write-up</a>
+                                <a href="https://chippppy.github.io/PongGame/index.html" class="btn btn--ghost" rel="noopener noreferrer" target="_blank">View live</a>
+                                <a href="https://github.com/Chippppy/PongGame" class="btn btn--ghost" rel="noopener noreferrer" target="_blank">Source code</a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="contact" class="journal-section journal-contact">
+            <div class="journal-section__marker" aria-hidden="true">03</div>
+            <div class="journal-section__grid">
+                <header class="journal-section__header">
+                    <p class="journal-section__eyebrow">Contact</p>
+                    <h2 class="journal-section__title">Feel free to say hi :)</h2>
+                </header>
+                <div class="journal-contact__panel">
+                    <p class="journal-contact__intro">LinkedIn and email are best for professional outreach. GitHub for code, Instagram if you prefer the informal route.</p>
+                    <ul class="journal-contact__list">
+                        <li>
+                            <a href="https://www.linkedin.com/in/harry-chip/" rel="noopener noreferrer" target="_blank">
+                                <span class="journal-contact__label">LinkedIn</span>
+                                <span class="journal-contact__value">harry-chip</span>
+                                <span class="journal-contact__indicator" aria-hidden="true">↗</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:lit-breezes-4r@icloud.com?subject=Networking%20Opportunity">
+                                <span class="journal-contact__label">Email</span>
+                                <span class="journal-contact__value">lit-breezes-4r@icloud.com</span>
+                                <span class="journal-contact__indicator" aria-hidden="true">✉</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Chippppy" rel="noopener noreferrer" target="_blank">
+                                <span class="journal-contact__label">GitHub</span>
+                                <span class="journal-contact__value">Chippppy</span>
+                                <span class="journal-contact__indicator" aria-hidden="true">↗</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/harrychip.man/" rel="noopener noreferrer" target="_blank">
+                                <span class="journal-contact__label">Instagram</span>
+                                <span class="journal-contact__value">@harrychip.man</span>
+                                <span class="journal-contact__indicator" aria-hidden="true">↗</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <!-- NetworkIDS -->
-            <div class="project-card reverse">
-                <div class="project-images">
-                    <img src="./assets/NetworkIDS.jpg" alt="NetworkIDS Project Screenshot 1" class="project-image">
-                </div>
-                <div class="project-info">
-                    <h2>NetworkIDS - Simple Network Intrusion Detection System</h2>
-                    <p>A simple IDS developed in Python that monitors network traffic to detect suspicious activities, aiding in the identification of potential security breaches.</p>
-                    <div class="project-links">
-                        <!-- <a href="https://chippppy.github.io/.../" class="button">View Live</a> -->
-                        <a href="https://github.com/Chippppy/Network-IDS" class="button">Source Code</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TeraRaidCalc -->
-            <div class="project-card">
-                <div class="project-images">
-                    <img src="./assets/TeraRaidCalc1.jpg" alt="TeraRaidCalc Project Screenshot 1" class="project-image">
-                    <img src="./assets/TeraRaidCalc2.jpg" alt="TeraRaidCalc Project Screenshot 2" class="project-image">
-                </div>
-                <div class="project-info">
-                    <h2>TeraRaidCalc - Pokémon Tera Raid Battle Calculator</h2>
-                    <p>A web application built with TypeScript that assists players in strategizing for Tera Raid Battles in the video game Pokémon Scarlet and Violet by comparing Pokémon types and base stats to determine the best possible Pokémon to use.</p>
-                    <div class="project-links">
-                        <!-- <a href="https://chippppy.github.io/.../" class="button">View Live</a> -->
-                        <a href="https://github.com/Chippppy/Tera-Raid-Battle-Calculator" class="button">Source Code</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Portfolio Website -->
-            <div class="project-card">
-                <div class="project-images">
-                    <img src="./assets/WebsiteScreenshot.jpg" alt="Website Project Screenshot" class="project-image">
-                </div>
-                <div class="project-info">
-                    <h2>Portfolio Website</h2>
-                    <p>A responsive, single-page portfolio built with HTML, CSS, and JavaScript, showcasing my projects, experience, and contact information. Hosted via GitHub Pages.</p>
-                    <div class="project-links">
-                        <a href="#home" class="button">View Live</a>
-                        <a href="https://github.com/Chippppy/HarryChipmanWebsite" class="button">Source Code - GitHub</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Japan Trip Travel Website -->
-            <div class="project-card reverse">
-                <div class="project-images">
-                    <img src="./assets/japan-tripScreenshot.jpg" alt="Japan Trip Website Project Screenshot" class="project-image">
-                </div>
-                <div class="project-info">
-                    <h2>Japan Trip Travel Website</h2>
-                    <p>A static website documenting my travels across Japan, featuring city-specific pages, photo galleries, and personal anecdotes, built with HTML, CSS, and JavaScript.</p>
-                    <div class="project-links">
-                        <a href="https://chippppy.github.io/japan-trip/" class="button">View Live</a>
-                        <a href="https://github.com/Chippppy/japan-trip" class="button">Source Code</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pong Game -->
-            <div class="project-card">
-                <div class="project-images">
-                    <img src="./assets/PongScreenshot.jpg" alt="Pong Game Project Screenshot" class="project-image">
-                </div>
-                <div class="project-info">
-                    <h2>Pure Javascript Pong! Game</h2>
-                    <p>My first programming project: a basic recreation of the classic Pong game using JavaScript, demonstrating fundamental game development concepts.</p>
-                    <div class="project-links">
-                        <a href="https://chippppy.github.io/PongGame/index.html" class="button">View Live</a>
-                        <a href="https://github.com/Chippppy/PongGame" class="button">Source Code</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <h1>Contact</h1>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h2>How to Reach Me</h2>
-                    <p>Feel free to reach out through any of these platforms (LinkedIn or Email are best):</p>
-                    
-                    <div class="social-grid">
-                        <a href="https://www.linkedin.com/in/harry-chip/" class="social-item" target="_blank">
-                            <i class="fab fa-linkedin"></i>
-                            <span>LinkedIn</span>
-                        </a>
-                        <a href="https://github.com/Chippppy" class="social-item" target="_blank">
-                            <i class="fab fa-github"></i>
-                            <span>GitHub</span>
-                        </a>
-                        <a href="https://www.instagram.com/harrychip.man/" class="social-item" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                            <span>Instagram</span>
-                        </a>
-                        <a href="mailto:lit-breezes-4r@icloud.com?subject=Networking%20Opportunity" class="social-item">
-                            <i class="fas fa-envelope"></i>
-                            <span>Email Me</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Back to Top -->
-    <div class="back-to-top-container">
-        <a href="#home" class="back-to-top">
-            <i class="fas fa-arrow-up"></i>
-            <span>Back to Top</span>
-        </a>
-    </div>
-
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
+            <p class="footer__note">Harry Chipman · Portfolio &amp; project journal</p>
             <div class="footer-links">
                 <a href="#about">About</a>
                 <a href="#projects">Projects</a>
-                <a href="blog.html">Blog</a>
                 <a href="#contact">Contact</a>
+                <a href="blog.html">Blog</a>
             </div>
             <div class="social-links">
-                <a href="https://www.linkedin.com/in/harry-chip/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                <a href="https://github.com/Chippppy" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-                <a href="https://www.instagram.com/harrychip.man/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/harry-chip/" rel="noopener noreferrer" target="_blank" title="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i><span class="visually-hidden">LinkedIn</span></a>
+                <a href="https://github.com/Chippppy" rel="noopener noreferrer" target="_blank" title="GitHub"><i class="fab fa-github" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+                <a href="https://www.instagram.com/harrychip.man/" rel="noopener noreferrer" target="_blank" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i><span class="visually-hidden">Instagram</span></a>
             </div>
         </div>
     </footer>

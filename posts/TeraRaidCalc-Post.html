@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeraRaidCalc: Type Matchups as a Scoring Problem — Write-up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spectral:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html#home" class="logo">HC</a>
+            <div class="nav-links" id="nav-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../blog.html">Blog</a>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 0010.18 9.79z" />
+                    </svg>
+                </button>
+            </div>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <article class="post">
+            <header class="post-header container">
+                <p class="post-back"><a href="../blog.html"><i class="fas fa-arrow-left"></i> Back to Hub</a></p>
+                <h1 class="post-title">TeraRaidCalc: Type Matchups as a Scoring Problem</h1>
+                <div class="post-meta">June 2025 · TypeScript · React</div>
+                <div class="post-hero post-hero--duo">
+                    <img src="../assets/TeraRaidCalc1.jpg" alt="TeraRaidCalc type comparison view" loading="lazy">
+                    <img src="../assets/TeraRaidCalc2.jpg" alt="TeraRaidCalc stat analysis screen" loading="lazy">
+                </div>
+            </header>
+
+            <div class="post-body container">
+                <h2>The problem</h2>
+                <p>Tera Raids in Pokémon Scarlet and Violet punish lazy team choices. I kept doing mental arithmetic for type effectiveness, tera overrides, and bulk - so I turned the problem into code.</p>
+                <p>The goal was quick raid prep: rank a shortlist of counters before I burned a raid sandwich, not build a full competitive VGC simulator.</p>
+
+                <h2>Pokemon Battle Types Explained</h2>
+                <p>Every Pokémon has one or two types. When you attack, the move's type is checked against the defender's types on a chart: super effective (2×), not very effective (½×), or no effect (0× from immunities). Dual-types multiply those modifiers, which is why a Water move into Grass/Dragon feels different from Water into pure Grass.</p>
+                <p>STAB (same-type attack bonus) is the quiet multiplier people forget in raid panic. When a Pokémon uses a move that matches one of its own types, damage gets a 1.5× boost. That is why a high Attack stat on the "right" offensive type matters as much as raw super effectiveness on paper.</p>
+                <p>Immunities are hard zeros, not small penalties. Ground cannot hit Flying; Electric cannot hit Ground in the classic loop. In raids those edges show up as wasted turns if you bring a counter that looks good on a chart but cannot damage the boss at all.</p>
+                <p>Tera Raid bosses add a tera type on top of their base typing. Terastalizing can change which moves are super effective against them and which resistances they keep from their original types. A Fire Tera Charizard is not the same threat model as base Fire/Flying - the calculator has to score against both layers.</p>
+
+                <h2>The scoring model</h2>
+                <p>Instead of a single "super effective" lookup, the app ranks candidates with several signals:</p>
+                <ul>
+                    <li>Type effectiveness against both original and tera types</li>
+                    <li>Defensive bulk (HP, Defense, Sp. Defense)</li>
+                    <li>Offensive potential (Attack, Sp. Attack) and STAB potential</li>
+                    <li>Speed tier advantages and immunity interactions</li>
+                </ul>
+                <p>React and TypeScript keep the UI responsive while the scoring logic stays in plain functions I can reason about and adjust. A chart tells you one matchup; a score sorts ten Pokémon you already own.</p>
+
+                <h2>What I learned</h2>
+                <p>Domain rules explode quickly. Tera types rewrite matchups; immunities zero out entire categories; speed ties matter for support roles. Encoding game knowledge in data structures is harder than drawing type charts on paper.</p>
+                <p>There is no universal "best" counter without context - raid level, your box, and whether you need bulk or burst all shift the ranking. The tool reflects that by sorting, not declaring a single winner.</p>
+
+                <h2>What I'd improve next</h2>
+                <p>Move-based recommendations, event raid presets, and offline caching of Pokémon data so the app works without repeated API calls.</p>
+                <div class="post-cta"><a class="btn btn--primary" href="https://github.com/Chippppy/Tera-Raid-Battle-Calculator" rel="noopener noreferrer" target="_blank">Source code</a></div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../blog.html">Blog</a>
+            </div>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/harry-chip/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Chippppy" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.instagram.com/harrychip.man/" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

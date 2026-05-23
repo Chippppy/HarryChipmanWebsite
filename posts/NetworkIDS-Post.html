@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raspberry Pi Home Server Setup - Write-up</title>
+    <title>NetworkIDS: Sniffing Packets and Surfacing Alerts - Write-up</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,33 +40,41 @@
         <article class="post">
             <header class="post-header container">
                 <p class="post-back"><a href="../blog.html"><i class="fas fa-arrow-left"></i> Back to Hub</a></p>
-                <h1 class="post-title">Raspberry Pi Home Server Setup</h1>
-                <div class="post-meta">Sept 2025 · HomeLab · Linux · Cybersecurity</div>
+                <h1 class="post-title">NetworkIDS: Sniffing Packets and Surfacing Alerts</h1>
+                <div class="post-meta">June 2025 · Python · Network Security</div>
                 <div class="post-hero">
-                    <img src="../assets/PiServerNeofetch.png" alt="Raspberry Pi home server neofetch output" loading="lazy">
+                    <img src="../assets/NetworkIDS.jpg" alt="NetworkIDS Streamlit dashboard" loading="lazy">
                 </div>
             </header>
 
             <div class="post-body container">
                 <h2>The problem</h2>
-                <p>I wanted an always-on Linux box at home that was cheap to run, quiet, and useful for learning administration outside coursework. A Raspberry Pi felt like the right balance: low power draw, small footprint, and enough headroom for services I could break and rebuild without a cloud bill or production downtime.</p>
-                <p>The goal was not to replace cloud hosting. Most of what runs on the Pi is experimental - test services, security tooling, coursework spin-ups. It is also the machine I SSH into when I want always-on Linux at home, so I try to be honest about which parts are toys and which parts I actually rely on day to day.</p>
+                <p>Reading about intrusion detection is different from watching packets arrive in real time. I built NetworkIDS to connect textbook ideas - port scans, brute force, floods - to something I could run locally and see on a dashboard.</p>
 
-                <h2>Key decisions</h2>
+                <h2>Theory</h2>
+                <p>An intrusion detection system (IDS) watches network traffic and flags activity that looks wrong. Some IDS tools match known attack signatures. Mine uses simple heuristics instead: count events in a time window (many different ports from one IP, repeated SSH attempts, a burst of ICMP) and treat threshold crossings as alerts.</p>
+                <p>Packet sniffing means copying frames off the wire as they pass. That requires elevated privileges because the OS normally blocks raw socket access - on Windows via Npcap, on Linux via sudo. The friction is part of the lesson: monitoring tools sit close to the kernel and need deliberate deployment.</p>
+                <p>While reading up on IDS history, I liked that early open-source projects like Snort helped make packet inspection approachable outside vendor appliances. NetworkIDS is nowhere near that scale - it is a learning stack - but the shape is similar: capture, classify, alert, review.</p>
+
+                <h2>How it works</h2>
+                <p>Two processes, one pipeline:</p>
                 <ul>
-                    <li><strong>Headless Linux over desktop setup.</strong> SSH-only access keeps the Pi lean and closer to how real servers are managed.</li>
-                    <li><strong>Separate user accounts and sudo discipline.</strong> Running day-to-day tasks as a non-root user made permission mistakes visible early.</li>
-                    <li><strong>Static IP on the local network.</strong> Makes port forwarding, service discovery, and firewall rules much easier to reason about.</li>
-                    <li><strong>Basic hardening first.</strong> Firewall rules, disabled unused services, and key-based SSH before exposing anything beyond the LAN.</li>
-                    <li><strong>Monitoring over perfection.</strong> Simple uptime checks and log review beat over-engineering the stack on day one.</li>
+                    <li><strong>sniffer.py.</strong> Captures TCP, UDP, and ICMP with Scapy, applies detection thresholds, writes stats and alerts to JSON under <code>data/</code>.</li>
+                    <li><strong>dashboard.py (Streamlit).</strong> Reads those files and charts traffic mix, attack categories, and severity-filtered alerts in the browser.</li>
                 </ul>
+                <p>Detections include port scanning, SSH brute-force patterns, ICMP floods, and repeated login attempts. Trusted cloud IP ranges can be whitelisted to cut noise from legitimate services.</p>
+
+                <h2>Practical constraints</h2>
+                <p>This is a local monitoring experiment, not production NIDS. Packet capture needs admin or root. False positives are expected on busy networks - thresholds in <code>sniffer.py</code> are tunable but not magic.</p>
+                <p><em>Disclosure:</em> Parts of this project were developed with AI assistance for README structure, refactoring, and import recommendations - noted in the repo because transparency matters.</p>
 
                 <h2>What I learned</h2>
-                <p>Running my own hardware teaches patience. Updates that take seconds on a laptop can take minutes on ARM. Storage I/O is the real bottleneck, not CPU. The moment I expose a service to the internet, the threat model changes immediately - even for a learning box.</p>
-                <p>The neofetch screenshot above is mostly vanity, but it is a useful checkpoint: kernel version, uptime, and resource usage at a glance.</p>
+                <p>Alerts only help if someone looks at them. Splitting capture (sniffer) from visualization (dashboard) kept concerns separate, but it also meant I had to run two terminals and remember the sniffer needs privileges the dashboard does not.</p>
+                <p>Whitelisting cloud ranges taught me how much background noise comes from normal services when you sniff on a machine that also browses the web.</p>
 
                 <h2>What I'd improve next</h2>
-                <p>Docker would make service rollbacks cleaner. I would also add centralized logging and automated backups to external storage. Longer term, I want to wire this Pi into my NetworkIDS project so homelab LAN traffic gets analyzed the same way I would treat any other network segment.</p>
+                <p>Persistent alert storage, correlation rules across sessions, and integration with my Raspberry Pi home server so homelab LAN traffic gets the same treatment as lab traffic.</p>
+                <div class="post-cta"><a class="btn btn--primary" href="https://github.com/Chippppy/Network-IDS" rel="noopener noreferrer" target="_blank">Source code</a></div>
             </div>
         </article>
     </main>

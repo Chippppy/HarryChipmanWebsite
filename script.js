@@ -1,134 +1,153 @@
-// Mobile menu toggle
 const menuToggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelector('.nav-links');
-
-menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-});
-
-// Close mobile menu when clicking outside
-document.addEventListener('click', (e) => {
-    if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
-        navLinks.classList.remove('active');
-    }
-});
-
-// Close mobile menu when window is resized
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-        navLinks.classList.remove('active');
-    }
-});
-
-// Theme toggle functionality
+const navbar = document.querySelector('.navbar');
 const themeToggle = document.querySelector('.theme-toggle');
 const sunIcon = document.querySelector('.sun-icon');
 const moonIcon = document.querySelector('.moon-icon');
 const htmlElement = document.documentElement;
+const heroSection = document.querySelector('.journal-hero');
 
-// Check for saved theme preference
+function setMenuOpen(isOpen) {
+    if (!navLinks || !menuToggle) return;
+    navLinks.classList.toggle('active', isOpen);
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+}
+
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+        setMenuOpen(!navLinks.classList.contains('active'));
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+            setMenuOpen(false);
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            setMenuOpen(false);
+        }
+    });
+}
+
 const savedTheme = localStorage.getItem('theme') || 'dark';
 htmlElement.setAttribute('data-theme', savedTheme);
 updateThemeIcon(savedTheme);
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = htmlElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    htmlElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
-});
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        htmlElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+    });
+}
 
 function updateThemeIcon(theme) {
-    if (theme === 'dark') {
-        sunIcon.style.display = 'block';
-        moonIcon.style.display = 'none';
-    } else {
-        sunIcon.style.display = 'none';
-        moonIcon.style.display = 'block';
-    }
+    if (!sunIcon || !moonIcon) return;
+    const isDark = theme === 'dark';
+    sunIcon.style.display = isDark ? 'block' : 'none';
+    moonIcon.style.display = isDark ? 'none' : 'block';
 }
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+        const targetId = anchor.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+
         const targetElement = document.querySelector(targetId);
-        
-        if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth'
-            });
-            
-            // Close mobile menu after clicking
-            navLinks.classList.remove('active');
-        }
+        if (!targetElement) return;
+
+        e.preventDefault();
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+        setMenuOpen(false);
     });
 });
 
-// Active section highlighting
 const sections = document.querySelectorAll('section[id]');
-const navItems = document.querySelectorAll('.nav-links a');
+const navItems = document.querySelectorAll('.nav-links a[href^="#"]');
 
 function highlightActiveSection() {
-    const scrollPosition = window.scrollY;
+    if (!sections.length || !navItems.length) return;
 
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100; // Adjust based on navbar height
+    const scrollPosition = window.scrollY + 120;
+
+    sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
         const sectionId = section.getAttribute('id');
-        
+
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('href') === `#${sectionId}`) {
-                    item.classList.add('active');
-                }
+            navItems.forEach((item) => {
+                item.classList.toggle('active', item.getAttribute('href') === `#${sectionId}`);
             });
         }
     });
 }
 
-window.addEventListener('scroll', highlightActiveSection);
-window.addEventListener('load', highlightActiveSection);
+function updateNavbarState() {
+    if (!navbar) return;
 
-// Contact form character counter
+    const scrollY = window.scrollY;
+    const heroHeight = heroSection ? heroSection.offsetHeight : 0;
+
+    navbar.classList.toggle('navbar--solid', scrollY > 48);
+    navbar.classList.toggle('navbar--overlay', heroSection && scrollY < heroHeight - 80);
+}
+
+window.addEventListener('scroll', () => {
+    highlightActiveSection();
+    updateNavbarState();
+}, { passive: true });
+
+window.addEventListener('load', () => {
+    highlightActiveSection();
+    updateNavbarState();
+});
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!prefersReducedMotion) {
+    const revealTargets = document.querySelectorAll(
+        '.journal-section__header, .journal-about__layout, .work-entry, .journal-contact__panel'
+    );
+
+    revealTargets.forEach((el) => el.classList.add('reveal'));
+
+    const revealObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+    );
+
+    revealTargets.forEach((el) => revealObserver.observe(el));
+}
+
 const messageTextarea = document.getElementById('message');
 const charCount = document.getElementById('charCount');
 const emailForm = document.getElementById('emailForm');
 
 if (messageTextarea && charCount) {
-    messageTextarea.addEventListener('input', function() {
+    messageTextarea.addEventListener('input', function () {
         const currentLength = this.value.length;
         charCount.textContent = currentLength;
-        
-        // Visual feedback when approaching limit
-        if (currentLength >= 450) {
-            charCount.style.color = '#e74c3c';
-        } else {
-            charCount.style.color = '';
-        }
+        charCount.style.color = currentLength >= 450 ? 'var(--color-accent-deep)' : '';
     });
 }
 
-// Form submission handling
 if (emailForm) {
-    emailForm.addEventListener('submit', function(e) {
+    emailForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
-        
-        // Here you would typically send the data to your backend
-        console.log('Form submitted:', { email, message });
-        
-        // Show success message
-        alert('Message sent successfully!');
-        
-        // Reset form
         this.reset();
-        charCount.textContent = '0';
+        if (charCount) charCount.textContent = '0';
     });
-} 
+}
