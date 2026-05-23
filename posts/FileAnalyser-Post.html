@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileAnalyser: Hashing, PE Parsing, and VirusTotal - Write-up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spectral:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html#home" class="logo">HC</a>
+            <div class="nav-links" id="nav-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../blog.html">Blog</a>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 0010.18 9.79z" />
+                    </svg>
+                </button>
+            </div>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <article class="post">
+            <header class="post-header container">
+                <p class="post-back"><a href="../blog.html"><i class="fas fa-arrow-left"></i> Back to Hub</a></p>
+                <h1 class="post-title">FileAnalyser: Hashing, PE Parsing, and VirusTotal</h1>
+                <div class="post-meta">May 2025 · Python · Malware Analysis</div>
+                <div class="post-hero post-hero--duo">
+                    <img src="../assets/FileAnalyser1.jpg" alt="FileAnalyser scan results view" loading="lazy">
+                    <img src="../assets/FileAnalyser2.jpg" alt="FileAnalyser PE file analysis output" loading="lazy">
+                </div>
+            </header>
+
+            <div class="post-body container">
+                <h2>The problem</h2>
+                <p>I was working through malware triage exercises and kept switching between separate tools - hash a sample, look it up on VirusTotal, open PE headers somewhere else, guess at runtime behavior. FileAnalyser bundles those steps into one pipeline I could run from a GUI or the terminal while I was still learning what each layer actually tells you.</p>
+
+                <h2>Background</h2>
+                <p>A hash is a fixed-size fingerprint of a file's exact bytes. Change even one bit and the digest almost always changes completely - that is what makes hashes useful for malware triage. Services like VirusTotal index known files by hash, so a lookup can return in seconds with multi-engine results: has anyone else already seen and labeled this exact binary? That is reputation lookup, not magic.</p>
+                <p>It works because a lot of commodity malware gets reused. Same strain, same builder, sometimes the same unpacked sample - the hash hit rate is surprisingly high for unmodified files. Security teams treat hash checks as step one because they are fast and often decisive before anyone runs a sandbox.</p>
+                <p>It breaks down in predictable ways. Repack or tweak the payload and the hash is new even when behavior is identical. Zero detections only means no engine has flagged that hash yet, not that the file is safe. Weak algorithms like MD5 have known collision research (two different files, same digest in theory) - which is part of why I lean on SHA-256 for submissions even when older feeds still show MD5.</p>
+                <p>One detail I picked up while reading about this: much of real-world triage never reaches deep reverse engineering. Analysts lean on hash and reputation layers first because they behave like a cache of other people's lab time. VirusTotal started as a single researcher's side project before becoming the shared lookup desk the industry uses today - which made me feel less guilty about building a tool that stops at "hash, then PE, then maybe behavior" instead of pretending I was writing a full sandbox on day one.</p>
+
+                <h2>The workflow</h2>
+                <p>Both interfaces walk the same path. For a file on disk the tool can:</p>
+                <ul>
+                    <li>Generate MD5, SHA-1, and SHA-256 hashes</li>
+                    <li>Submit the file or an existing hash to VirusTotal and pull multi-engine results (reputation lookup, not local signature matching)</li>
+                    <li>Parse PE structure for Windows executables (.exe, .dll, .sys) - sections, imports, exports</li>
+                    <li>Run optional sandbox-style behavior monitoring on the host (CPU, memory, open files, network connections)</li>
+                    <li>Extract metadata from Office documents, images, and plain text files</li>
+                </ul>
+                <p>The GUI also has a hash lookup tab when I already have a digest from another source and just want VirusTotal results without re-uploading the binary. Full PE analysis is most reliable on Windows, which matches how I built and tested it.</p>
+
+                <h2>Key decisions</h2>
+                <ul>
+                    <li><strong>API key via .env.</strong> Keeps the VirusTotal key out of source control and mirrors how real tools ship config.</li>
+                    <li><strong>Dual interface.</strong> GUI for exploring results; CLI for scripting and quick checks (with an optional <code>--sandbox</code> flag).</li>
+                    <li><strong>Reputation plus structure.</strong> VirusTotal answers "seen before?"; PE parsing answers "how is this binary shaped?"; behavior monitoring hints at "what did it do when run?" - none of those replace the others.</li>
+                </ul>
+
+                <h2>What I learned</h2>
+                <p>Malware triage is layered, not a single verdict. Hashes are fast fingerprints. VirusTotal aggregates other engines' detections - useful, but rate limits are real and a clean result is not proof of safety. PE headers sometimes expose imports and sections that matter more than a hash lookup alone.</p>
+                <p>Running even basic behavior monitoring on my own machine reminded me that "sandbox-style" on a laptop is still my laptop. Fine for learning, not something I would treat as production isolation. This is a triage helper I run locally, not a deployed security product.</p>
+
+                <h2>What I'd improve next</h2>
+                <p>Richer reporting exports, YARA rule hooks, and clearer handling when VirusTotal rate-limits or returns ambiguous results. Longer term I would containerize dynamic analysis instead of running binaries on the host OS.</p>
+                <div class="post-cta"><a class="btn btn--primary" href="https://github.com/Chippppy/File-Analyser-Tool" rel="noopener noreferrer" target="_blank">Source code</a></div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../blog.html">Blog</a>
+            </div>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/harry-chip/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Chippppy" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.instagram.com/harrychip.man/" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

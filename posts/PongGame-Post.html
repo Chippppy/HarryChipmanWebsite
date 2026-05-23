@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raspberry Pi Home Server Setup - Write-up</title>
+    <title>Pure JavaScript Pong: Where I Started - Write-up</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,33 +40,34 @@
         <article class="post">
             <header class="post-header container">
                 <p class="post-back"><a href="../blog.html"><i class="fas fa-arrow-left"></i> Back to Hub</a></p>
-                <h1 class="post-title">Raspberry Pi Home Server Setup</h1>
-                <div class="post-meta">Sept 2025 · HomeLab · Linux · Cybersecurity</div>
+                <h1 class="post-title">Pure JavaScript Pong: Where I Started</h1>
+                <div class="post-meta">July 2022 · JavaScript · Canvas</div>
                 <div class="post-hero">
-                    <img src="../assets/PiServerNeofetch.png" alt="Raspberry Pi home server neofetch output" loading="lazy">
+                    <img src="../assets/PongScreenshot.jpg" alt="Pure JavaScript Pong game" loading="lazy">
                 </div>
             </header>
 
             <div class="post-body container">
-                <h2>The problem</h2>
-                <p>I wanted an always-on Linux box at home that was cheap to run, quiet, and useful for learning administration outside coursework. A Raspberry Pi felt like the right balance: low power draw, small footprint, and enough headroom for services I could break and rebuild without a cloud bill or production downtime.</p>
-                <p>The goal was not to replace cloud hosting. Most of what runs on the Pi is experimental - test services, security tooling, coursework spin-ups. It is also the machine I SSH into when I want always-on Linux at home, so I try to be honest about which parts are toys and which parts I actually rely on day to day.</p>
+                <h2>Why this project still matters</h2>
+                <p>Pong was my first programming project. Two paddles, a ball, keyboard input, collision detection - nothing glamorous, but it proved I could ship something playable in the browser.</p>
 
-                <h2>Key decisions</h2>
+                <h2>How it works</h2>
+                <p>The game runs on the HTML canvas with a simple game loop: update positions, bounce off walls and paddles, score when the ball passes a paddle. Player one uses W/S; player two uses arrow keys.</p>
+
+                <h2>What it taught me</h2>
                 <ul>
-                    <li><strong>Headless Linux over desktop setup.</strong> SSH-only access keeps the Pi lean and closer to how real servers are managed.</li>
-                    <li><strong>Separate user accounts and sudo discipline.</strong> Running day-to-day tasks as a non-root user made permission mistakes visible early.</li>
-                    <li><strong>Static IP on the local network.</strong> Makes port forwarding, service discovery, and firewall rules much easier to reason about.</li>
-                    <li><strong>Basic hardening first.</strong> Firewall rules, disabled unused services, and key-based SSH before exposing anything beyond the LAN.</li>
-                    <li><strong>Monitoring over perfection.</strong> Simple uptime checks and log review beat over-engineering the stack on day one.</li>
+                    <li><strong>Update vs draw.</strong> Splitting simulation from rendering made the loop easier to reason about.</li>
+                    <li><strong>Frame timing.</strong> Getting smooth motion without a game engine meant learning requestAnimationFrame the hard way.</li>
+                    <li><strong>Feel debugging.</strong> Physics that looks wrong rarely throws an error - I had to watch values, not stack traces.</li>
                 </ul>
-
-                <h2>What I learned</h2>
-                <p>Running my own hardware teaches patience. Updates that take seconds on a laptop can take minutes on ARM. Storage I/O is the real bottleneck, not CPU. The moment I expose a service to the internet, the threat model changes immediately - even for a learning box.</p>
-                <p>The neofetch screenshot above is mostly vanity, but it is a useful checkpoint: kernel version, uptime, and resource usage at a glance.</p>
+                <p>Every later project - auth systems, malware tools, TypeScript apps - traces back to the confidence this build gave me.</p>
 
                 <h2>What I'd improve next</h2>
-                <p>Docker would make service rollbacks cleaner. I would also add centralized logging and automated backups to external storage. Longer term, I want to wire this Pi into my NetworkIDS project so homelab LAN traffic gets analyzed the same way I would treat any other network segment.</p>
+                <p>Touch or mobile controls, a simple score reset UX, and cleaner separation of input handling from the draw loop if I ever refactor it for fun.</p>
+
+                <h2>Play it</h2>
+                <p>It still runs in the browser exactly as it did in 2022.</p>
+                <div class="post-cta"><a class="btn btn--primary" href="https://chippppy.github.io/PongGame/index.html" rel="noopener noreferrer" target="_blank">Play live</a> <a class="btn btn--ghost" href="https://github.com/Chippppy/PongGame" rel="noopener noreferrer" target="_blank">Source code</a></div>
             </div>
         </article>
     </main>

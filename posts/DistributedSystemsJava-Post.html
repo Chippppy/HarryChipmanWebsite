@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Job Scheduler Client: Talking to a C Simulation Server - Write-up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spectral:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="../index.html#home" class="logo">HC</a>
+            <div class="nav-links" id="nav-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../blog.html">Blog</a>
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 0010.18 9.79z" />
+                    </svg>
+                </button>
+            </div>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <article class="post">
+            <header class="post-header container">
+                <p class="post-back"><a href="../blog.html"><i class="fas fa-arrow-left"></i> Back to Hub</a></p>
+                <h1 class="post-title">Java Job Scheduler Client: Talking to a C Simulation Server</h1>
+                <div class="post-meta">2024 · Java · Job Scheduling</div>
+            </header>
+
+            <div class="post-body container">
+                <h2>The problem</h2>
+                <p>Distributed scheduling sounds abstract until a C server starts flinging jobs at your client and grades you on what you send back.</p>
+                <p>This was my client for Macquarie University's COMP6105/3100 distributed systems unit. The simulation server, <strong>ds-sim</strong>, is written in C. My job was to build a Java client that could authenticate, read job and server state from the wire, and return allocation decisions - acting as the scheduling backend for the simulation.</p>
+                <p>The interesting work was never "Java talks to C" as a headline. Languages were incidental. The protocol was the contract, and the scheduling logic was where the unit actually tested understanding.</p>
+
+                <h2>Job Scheduling in Distributed Systems Explained</h2>
+                <p>In this simulation, a <strong>scheduler</strong> decides which machine runs each incoming job. The server owns the world model: which servers exist, what capacity they have, which jobs are waiting. The client receives that state and must reply with sensible placements before the simulation moves on.</p>
+                <p>Real schedulers face the same tension in bigger systems. <strong>Utilization</strong> pushes you to pack work onto capable machines so nothing sits idle. <strong>Fairness</strong> pushes back - always favoring the biggest box can starve smaller jobs or create uneven wait times. <strong>Simplicity</strong> matters when you are debugging at 1 a.m. and the server rejects your message because you misread one field.</p>
+                <p>Cross-language client/server setups are normal here. What matters is that both sides agree on message order, field meaning, and failure behavior. The ds-sim server could stay in C while I iterated on Java scheduling strategies behind the same interface.</p>
+                <p>One thing that stuck with me while reading around the topic: scheduling shows up everywhere - OS run queues, Kubernetes pod placement, batch job queues - with different constraints but the same shape. This assignment is a toy, but the loop (state in, decision out, consequences on the next turn) is the same loop production systems live in.</p>
+
+                <h2>How the client fits together</h2>
+                <p>At a high level the client follows a fixed rhythm:</p>
+                <ol>
+                    <li><strong>Authenticate.</strong> Initial handshake with ds-sim so the server accepts the session.</li>
+                    <li><strong>Receive state.</strong> Server messages describe pending jobs and available servers (cores, memory, disk - whatever the config defines).</li>
+                    <li><strong>Decide.</strong> The selected algorithm picks a target server for each job.</li>
+                    <li><strong>Respond.</strong> The client sends allocations back; the simulation advances and the cycle repeats until jobs are exhausted or the run ends.</li>
+                </ol>
+                <p>I kept protocol parsing and scheduling strategy as separate concerns in code even when the file was one big <code>client.java</code>. Parsing errors and bad allocation logic fail in different ways, and separating them made Stage 2 easier - swap the scheduler without touching the wire format.</p>
+                <p><strong>Verbose mode</strong> (<code>-v</code>) prints every command the client sends and every response from the server. That sounds noisy, but it is the difference between guessing why a handshake failed and seeing the exact line the server rejected. For distributed message flows, I treat verbose tracing as part of the tool, not a demo gimmick.</p>
+                <p>Scope note: this is coursework against a provided simulator, not a production cluster manager. ds-sim owns the physics of the simulation; I own the client-side policy.</p>
+                <p>Running it locally means two terminal sessions: one for ds-sim (for example <code>./ds-server -n -c ../../configs/sample-configs/sample-config02.xml</code> per the unit setup) and one for the Java client. When something hangs, the bug is almost always in the conversation between those two processes - not in either program compiling cleanly on its own.</p>
+
+                <h2>The three algorithms (and Start-Servers)</h2>
+                <p>The client exposes three schedulers via the <code>-a</code> flag. I implemented all three; Stage 2 required a custom algorithm, which became <strong>Start-Servers</strong> (<code>ss</code>).</p>
+                <ul>
+                    <li><strong>lrr (Largest-Round-Robin).</strong> Walk the server list favoring the largest capable machines, rotating among them in round-robin order. This chases utilization - big servers stay busy - but job mix matters. A stream of small jobs can behave unevenly when large servers keep getting picked.</li>
+                    <li><strong>fc (First-Capable).</strong> Scan servers in order and assign each job to the first machine that can run it. Easy to implement and reason about, which makes it a useful baseline. The tradeoff is waste: a small job might land on an oversized server because it appeared first in the list, leaving larger capacity unused for harder work later.</li>
+                    <li><strong>ss (Start-Servers).</strong> My Stage 2 design. Prefer a server that is already available (idle or ready to take work). If none are free, fall back to the first capable server - similar to fc, but availability comes first. It sits between "always pick the biggest" and "always pick the first match," and it matched how I wanted the simulation to feel: keep machines running when possible without ignoring capability constraints. I chose that rule order because the sim penalizes idle capacity quickly, but blindly picking the first fit still felt wrong when a larger server was free two slots later.</li>
+                </ul>
+                <p>Example run with verbose logging and the custom scheduler:</p>
+                <pre><code>javac client.java
+java client -a ss -v</code></pre>
+                <p>The README ships a precompiled <code>client.class</code> built on an M1 Mac inside an Ubuntu VM. I learned not to trust that on other machines - recompiling locally with <code>javac client.java</code> before pairing with ds-sim avoids silent bytecode mismatches.</p>
+                <p>None of these algorithms is universally "best." That was the point of implementing more than one: the assignment grades behavior under the simulator's metrics, and each policy optimizes for a different instinct about utilization, fairness, and simplicity.</p>
+
+                <h2>What I learned</h2>
+                <p>Protocol discipline beat language familiarity. I could write Java comfortably, but a misplaced field in an outbound message still failed the whole run. Reading the server's responses in verbose mode taught me more about distributed client design than rereading slides.</p>
+                <p>Algorithm choice is a product decision in miniature. First-Capable is the fast hack. Largest-Round-Robin chases throughput. Start-Servers was my attempt at a middle policy with an explicit rule order: availability first, capability second.</p>
+                <p>Portable builds matter even in assignments. Bundled class files are convenient for markers; they are fragile for anyone on a different JDK or OS. Compiling from source on the machine that runs the sim is the reliable path.</p>
+
+                <h2>What I'd improve next</h2>
+                <p>If I revisited the project today, I would split protocol I/O and scheduling into separate classes or modules, add structured logging around decision points, and capture run metrics from ds-sim output so algorithm comparisons are evidence-based instead of gut feel.</p>
+                <p>A simple message-flow diagram would help future readers more than another paragraph of prose. I would add that to the repo README once I had a screenshot or SVG worth shipping.</p>
+                <p>This stays a university simulation client - not something I would deploy as infrastructure - but it is a concrete example of client/server scheduling work I am happy to walk through in detail.</p>
+                <div class="post-cta"><a class="btn btn--primary" href="https://github.com/Chippppy/Distributed-Systems-Java" rel="noopener noreferrer" target="_blank">Source code</a></div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#projects">Projects</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../blog.html">Blog</a>
+            </div>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/harry-chip/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Chippppy" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.instagram.com/harrychip.man/" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
